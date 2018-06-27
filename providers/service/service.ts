@@ -17,6 +17,7 @@ export class ServiceProvider {
   serverURL:string = "http://localhost:8081";
 
   getData(){
+    console.log("getData()");
     return this.http.get(this.serverURL+'/show').map(res => res );
   }
 
