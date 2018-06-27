@@ -10,11 +10,11 @@ import { AddPage } from '../add/add';
 export class HomePage {
   items:Array<any>;
   constructor(public navCtrl: NavController,private dataService: ServiceProvider,public modalCtrl:ModalController) {
-
+    let result = this.dataService.getData();
+    console.log(result);
   }
 
   addPage(){
-
     let modal = this.modalCtrl.create(AddPage);
 
     modal.onDidDismiss(student => {
