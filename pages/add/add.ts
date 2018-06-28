@@ -31,7 +31,7 @@ export class AddPage {
   }
   save(): void {
     let student = {
-      id:this.id,
+      _id:this.id,
       name:this.name,
       surname: this.surname,
       age: this.age

@@ -9,10 +9,12 @@ import { AddPage } from '../add/add';
 })
 export class HomePage {
 
-  students:Array<any>;
+  students:any;  
   indx:string;
+  
 
   constructor(public navCtrl: NavController,private dataService: ServiceProvider,public modalCtrl:ModalController) {
+    //this.students = [];
     this.onLoad();
   }
 
@@ -21,19 +23,26 @@ export class HomePage {
     this.indx = indx;
     let modal = this.modalCtrl.create(AddPage,this.students[indx]);
 
-    modal.onDidDismiss(student => {
-      if(student){
+    modal.onDidDismiss(student => {      
+      if(student){      
+        if(student.name==undefined && student.surname==undefined && student.age==undefined){
+          this.dataService.presentToast("Can't add");
+          return;
+        }  
         //console.log("onDidDismiss: ",student);
-        if(student.id!=undefined){
+        //this.dataService.presentToast("student id:"+student.id);
+        if(student._id!=undefined && student._id!=''){           
             this.dataService.updateData(student).subscribe(res => {
-              console.log("indx:"+this.indx);
+              //console.log("indx:"+this.indx);
               this.students[indx] = student;
+              this.dataService.presentToast("updated: "+student.name);
               console.log(res);
             })
-        }else{
-            this.dataService.addData(student).subscribe(res =>{
-              console.log(res);
+        }else{          
+            this.dataService.addData(student).subscribe(res =>{              
               this.students.push(student);
+              this.dataService.presentToast("added: "+student.name);
+              console.log(res);
             })
         }
         
@@ -42,11 +51,12 @@ export class HomePage {
     modal.present();
 
   }
-
+  
   onLoad(){
-    this.dataService.getData().subscribe(res=>{
-        this.students = res.message;
-        console.log(res.message);
+    this.dataService.getData().subscribe(res => {      
+        let Res:any = res;
+        this.students = Res.message;
+        console.log(Res.message);
     })
   }
 
@@ -57,6 +67,7 @@ export class HomePage {
     }
     this.dataService.deleteData(student._id).subscribe(res => {
         console.log(res);
+        this.dataService.presentToast("deleted: "+student.name);
     })
 
   }

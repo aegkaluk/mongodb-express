@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar transparent>
     <ion-title>
-      Ionic MongoDb Express
+      Students
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="addPage()"><ion-icon name="add"></ion-icon></button>
@@ -10,6 +10,7 @@
 </ion-header>
 
 <ion-content padding>
+  <p>Ionic+Node.js(Heroku)+Mongodb(mLab)</p>
   <ion-list no-lines>
  
     <ion-item-sliding *ngFor="let item of students;let indx = index" [attr.data-index]="i">
