@@ -7,7 +7,7 @@
 <ion-header>
 
     <ion-toolbar transparent>
-        <ion-title>Add Data</ion-title>
+        <ion-title>Student Data</ion-title>
         <ion-buttons end>
           <button ion-button icon-only (click)="close()"><ion-icon name="close"></ion-icon></button>
         </ion-buttons>
@@ -15,7 +15,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding>  
   <ion-item>
     <ion-label>Name</ion-label>
     <ion-input type="text" [(ngModel)]="name" name="name"></ion-input>
@@ -27,9 +27,14 @@
   <ion-item>
     <ion-label>Age</ion-label>
     <ion-input type="text" [(ngModel)]="age" name="age"></ion-input>
+    <ion-input type="hidden" [(ngModel)]="id" name="id"></ion-input>
   </ion-item>
   <ion-item>
-    <button ion-button (click)="save()">Add Data</button>
+      <img src="{{imageURI}}" *ngIf="imageURI" width="300"><br>
+    <button ion-button (click)="getImage()">Select Image</button>
+  </ion-item>
+  <ion-item>    
+    <button ion-button (click)="save()">Done</button>
   </ion-item>
 
 </ion-content>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar transparent>
     <ion-title>
-      Ionic MongoDb Express
+      Students
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="addPage()"><ion-icon name="add"></ion-icon></button>
@@ -10,15 +10,17 @@
 </ion-header>
 
 <ion-content padding>
+  <p>Ionic+Node.js(Heroku)+Mongodb(mLab)</p>
   <ion-list no-lines>
  
-    <ion-item-sliding *ngFor="let item of items">
+    <ion-item-sliding *ngFor="let item of students;let indx = index" [attr.data-index]="i">
  
      <ion-item>
         <ion-avatar item-left>
-          <img src="https://api.adorable.io/avatars/75/{{item.age}}">
+          <a href="#" (click)="addPage(indx)"><img src="https://api.adorable.io/avatars/75/{{item.age}}"></a>
         </ion-avatar>
-        <h2>{{item.name}} {{item.surname}}</h2>         
+        <h2>{{item.name}} {{item.surname}}</h2>        
+        <p>{{item.age}}</p> 
     </ion-item>
  
       <ion-item-options>

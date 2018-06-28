@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angular';
+import { ServiceProvider } from '../../providers/service/service';
 /**
  * Generated class for the AddPage page.
  *
@@ -14,26 +15,86 @@ import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angula
 })
 export class AddPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,private dataService:ServiceProvider) {        
+    this.id = navParams.get('_id');
+    this.name = navParams.get('name');
+    this.surname = navParams.get('surname');
+    this.age = navParams.get('age');
   }
-  name:any;
-  surname:any;
-  age: any;
+  id:string;
+  name:string;
+  surname:string;
+  age: string;
+  imageURI:any;
+  imagePath:any;
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddPage');
+    console.log('ionViewDidLoad AddPage _id: '+this.id);
+    //console.log(this.navParams.get('name'));
   }
   save(): void {
+    this.imagePath = this.dataService.uploadFile(this.imageURI);
     let student = {
+      _id:this.id,
       name:this.name,
       surname: this.surname,
-      age: this.age
-    };
+      age: this.age,
+      impagPath :this.imagePath
+    };    
     this.viewCtrl.dismiss(student);
   }
 
   close(): void {
     this.viewCtrl.dismiss();
   }
+
+  getImage(): void {
+    console.log("getImage()");
+    this.imageURI = this.dataService.getImage();
+  }
+
+  
+
+  /*
+  uploadFile(){
+    if(this.imageURICrop!=undefined){
+        let loader = this.loadingCtrl.create({
+          content:"Uploading.."
+        })
+        loader.present();
+        const fileTransfer: FileTransferObject = this.transfer.create();
+        
+        let fileName = this.provider.createFileName();
+        console.log(fileName);
+
+        let options: FileUploadOptions = {
+          fileKey: 'ionicfile', //php match $_FILES["ionicfile"]
+          fileName: fileName,
+          chunkedMode: false,
+          mimeType: 'image/jpeg',
+          headers: {}
+        }
+
+        let pathUpload = this.apiURL+"/upload/";
+        
+        fileTransfer.upload(this.imageURICrop,pathUpload,options)
+            .then((data) => {
+                console.log(data+" Uploaded Successfully");
+                this.dataService.presentToast(data);//show object                
+                this.imageURIuploaded = pathUpload+"/images/"+fileName;
+                loader.dismiss();
+            },(err) => {
+                console.log(err);
+                loader.dismiss();
+                this.provider.presentToast(err);
+            });
+      }else{
+        //this.provider.presentToast('Select or Take image ?');
+      }
+    }
+    */
+
+
+
 
 }
