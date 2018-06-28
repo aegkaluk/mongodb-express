@@ -10,11 +10,10 @@ import { AddPage } from '../add/add';
 export class HomePage {
   items:Array<any>;
   constructor(public navCtrl: NavController,private dataService: ServiceProvider,public modalCtrl:ModalController) {
-
+    this.onLoad();
   }
 
   addPage(){
-
     let modal = this.modalCtrl.create(AddPage);
 
     modal.onDidDismiss(student => {
@@ -26,6 +25,11 @@ export class HomePage {
     })
     modal.present();
 
+  }
+  onLoad(){
+    this.dataService.getData().subscribe(res=>{
+        console.log(res.message);
+    })
   }
 
 

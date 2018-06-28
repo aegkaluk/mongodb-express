@@ -2,9 +2,10 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoClient = require('mongodb').MongoClient;
-const mongo_string = "mongodb://localhost:27017/ionicmongodb"
-const myDb = "ionicmongodb";
-const myCollection = "ionicmongodb";
+//const mongo_string = "mongodb://localhost:27017/ionicmongodb"
+const mongo_string = "mongodb://mongouser:Ca999999@ds121301.mlab.com:21301/ionic_dev"
+const myDb = "ionic_dev";
+const myCollection = "students";
 const ObjectId = require('mongodb').ObjectId;
 
 //const path = require('path');
