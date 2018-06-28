@@ -27,9 +27,10 @@
   <ion-item>
     <ion-label>Age</ion-label>
     <ion-input type="text" [(ngModel)]="age" name="age"></ion-input>
+    <ion-input type="hidden" [(ngModel)]="id" name="id"></ion-input>
   </ion-item>
-  <ion-item>
-    <button ion-button (click)="save()">Add Data</button>
+  <ion-item>    
+    <button ion-button (click)="save()">Done</button>
   </ion-item>
 
 </ion-content>

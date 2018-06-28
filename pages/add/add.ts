@@ -14,17 +14,24 @@ import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angula
 })
 export class AddPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController) {        
+    this.id = navParams.get('_id');
+    this.name = navParams.get('name');
+    this.surname = navParams.get('surname');
+    this.age = navParams.get('age');
   }
+  id:any;
   name:any;
   surname:any;
   age: any;
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddPage');
+    console.log('ionViewDidLoad AddPage _id: '+this.id);
+    //console.log(this.navParams.get('name'));
   }
   save(): void {
     let student = {
+      id:this.id,
       name:this.name,
       surname: this.surname,
       age: this.age

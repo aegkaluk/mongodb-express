@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http'; //HttpHeaders
 import { Injectable } from '@angular/core';
 import "rxjs/add/operator/map";
 /*
@@ -19,6 +19,21 @@ export class ServiceProvider {
   getData(){
     console.log("getData()");
     return this.http.get(this.serverURL+'/show').map(res => res );
+  }
+
+  addData(student){
+    console.log("addData()");    
+    return this.http.post(this.serverURL+'/add',student).map(res => res );
+  }
+
+  updateData(student){
+    console.log("updateData()"+student.id);
+    return this.http.put(this.serverURL+'/update/'+student.id, student).map(res=>res);
+  }
+
+  deleteData(id){
+    console.log("deleteData() id:"+id);
+    return this.http.delete(this.serverURL+'/delete/'+id).map(res => res );
   }
 
 }

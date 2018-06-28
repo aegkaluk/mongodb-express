@@ -50,13 +50,13 @@ app.post('/add',function(req,res){
     });
 })
 
-app.put('/update/:id/:name/:surname/:age',function(req,res){
-    //res.end("update api: _id: "+req.params.id+" name:"+req.params.name+" surname:"+req.params.surname+" age:"+req.params.age );
+app.put('/update/:id',function(req,res){
+    //res.end("update api: _id: "+req.params.id+" name:"+req.body.name+" surname:"+req.body.surname+" age:"+req.body.age );
     mongoClient.connect(mongo_string,function(err,database){
         var db = database.db(myDb);
         
         var query = { _id : ObjectId(req.params.id) };
-        var newValue = {  $set:{ name : req.params.name, surname: req.params.surname, age: req.params.age} }; 
+        var newValue = {  $set:{ name : req.body.name, surname: req.body.surname, age: req.body.age} }; 
         db.collection(myCollection)
             .update(query, newValue, function(err,result){
                 if(err) throw err;
