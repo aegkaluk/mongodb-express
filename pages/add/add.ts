@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ViewController,LoadingController } from 'ionic-angular';
 import { ServiceProvider } from '../../providers/service/service';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 /**
  * Generated class for the AddPage page.
  *
@@ -16,33 +17,35 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 })
 export class AddPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,private dataService:ServiceProvider,private camera:Camera) {        
-    this.id = navParams.get('_id');
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,private dataService:ServiceProvider,private camera:Camera,public loadingCtrl: LoadingController,private transfer: FileTransfer) {        
+    this._id = navParams.get('_id');
     this.name = navParams.get('name');
     this.surname = navParams.get('surname');
-    this.age = navParams.get('age');
+    this.age = navParams.get('age');    
+    this.imageName = navParams.get('imageName');
+    this.mediaPath = this.dataService.getMediaPath(); 
   }
-  id:string;
+  _id:string;
   name:string;
   surname:string;
   age: string;
+  imageUpload:any;
   imageURI:any;
-  imagePath:any;
+  imageName:any;
+  mediaPath:any;
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddPage _id: '+this.id);
+    console.log('ionViewDidLoad AddPage _id: '+this._id);
+    console.log(this.imageName);
+    if(this.imageName!=undefined && this.imageName!=null){   
+      this.imageURI = this.mediaPath+"/"+this.imageName;
+    }else{
+      this.imageURI = this.mediaPath+"/default.jpg";
+    }
     //console.log(this.navParams.get('name'));
   }
-  save(): void {
-    //this.imagePath = this.dataService.uploadFile(this.imageURI);
-    let student = {
-      _id:this.id,
-      name:this.name,
-      surname: this.surname,
-      age: this.age,
-      impagPath :this.imagePath
-    };    
-    this.viewCtrl.dismiss(student);
+  save(): void {    
+    this.saveData();
   }
 
   close(): void {
@@ -50,66 +53,74 @@ export class AddPage {
   }
 
   getImage() {
-    console.log("getImage()");
+    console.log("getImage()");    
     const options : CameraOptions = {
-      quality: 60,     
+      quality: 50,     
       allowEdit: true,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
     }
     this.camera.getPicture(options).then((imageData)=>{    
-      this.imageURI =  imageData;
+      this.imageURI = imageData;
+      this.imageUpload =  imageData;  
+      this.imageName = this.dataService.createFileName();
     },(err)=> {
       console.log(err);    
       this.dataService.presentToast(err);
     })  
     
   }
-
   
-
-  
-
-  /*
-  uploadFile(){
-    if(this.imageURICrop!=undefined){
+  saveData(){
+    if(this.imageUpload!=undefined && this.imageUpload!=""){
         let loader = this.loadingCtrl.create({
-          content:"Uploading.."
+          content:"Saving.."
         })
         loader.present();
-        const fileTransfer: FileTransferObject = this.transfer.create();
-        
-        let fileName = this.provider.createFileName();
-        console.log(fileName);
+
+        const fileTransfer: FileTransferObject = this.transfer.create();       
 
         let options: FileUploadOptions = {
           fileKey: 'ionicfile', //php match $_FILES["ionicfile"]
-          fileName: fileName,
+          fileName: this.imageName,
           chunkedMode: false,
           mimeType: 'image/jpeg',
           headers: {}
         }
-
-        let pathUpload = this.apiURL+"/upload/";
-        
-        fileTransfer.upload(this.imageURICrop,pathUpload,options)
+        //let pathUpload = this.dataService.pathUpload+"/upload/";        
+        fileTransfer.upload(this.imageUpload,this.mediaPath+'/',options)
             .then((data) => {
-                console.log(data+" Uploaded Successfully");
-                this.dataService.presentToast(data);//show object                
-                this.imageURIuploaded = pathUpload+"/images/"+fileName;
-                loader.dismiss();
+                console.log(data+" Uploaded Successfully");                
+                loader.dismiss();    
+                this.callBackHome();            
+                //return pathUpload+"/images/"+this.imageName;
             },(err) => {
                 console.log(err);
-                loader.dismiss();
-                this.provider.presentToast(err);
+                loader.dismiss();               
+                //this.presentToast(err);
             });
       }else{
-        //this.provider.presentToast('Select or Take image ?');
+        this.callBackHome();
       }
-    }
-    */
+  }
 
+  callBackHome(){
+    let student = {
+      _id:this._id,
+      name:this.name,
+      surname: this.surname,
+      age: this.age,
+      imageName :this.imageName
+    };    
+    this.viewCtrl.dismiss(student); 
+  }
 
+  clearImage(){
+    this.imageURI = undefined;
+    this.imageName = undefined;
+    this.imageUpload = undefined;
+  }
 
+  
 
 }
