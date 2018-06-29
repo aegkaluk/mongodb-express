@@ -40,7 +40,8 @@ export class HomePage {
             })
         }else{          
             this.dataService.addData(student).subscribe(res =>{              
-              this.students.push(student);
+              //this.students.push(student);
+              this.onLoad();
               this.dataService.presentToast("added: "+student.name);
               console.log(res);
             })
