@@ -54,19 +54,6 @@ export class ServiceProvider {
     toast.present();
   }
 
-  getImage(){
-    const options : CameraOptions = {
-      quality: 100,      
-      allowEdit: true,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-    }
-    this.camera.getPicture(options).then((imageData)=>{
-      return imageData;
-    },(err)=> {
-      console.log(err);    
-    })
-  }
 
   uploadFile(imageURI){
     if(imageURI!=undefined && imageURI!=""){
@@ -115,6 +102,11 @@ export class ServiceProvider {
  pathUpload(){
    return "http://cloud.phuket-it.com/api/dev";
  }
+
+ getMatchJobs(){
+  return this.http.get('assets/data/jobs-match.json').map(res => res);
+ 
+  }
 
 
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,ViewController } from 'ionic-angular';
 import { ServiceProvider } from '../../providers/service/service';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 /**
  * Generated class for the AddPage page.
  *
@@ -15,7 +16,7 @@ import { ServiceProvider } from '../../providers/service/service';
 })
 export class AddPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,private dataService:ServiceProvider) {        
+  constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,private dataService:ServiceProvider,private camera:Camera) {        
     this.id = navParams.get('_id');
     this.name = navParams.get('name');
     this.surname = navParams.get('surname');
@@ -33,7 +34,7 @@ export class AddPage {
     //console.log(this.navParams.get('name'));
   }
   save(): void {
-    this.imagePath = this.dataService.uploadFile(this.imageURI);
+    //this.imagePath = this.dataService.uploadFile(this.imageURI);
     let student = {
       _id:this.id,
       name:this.name,
@@ -48,10 +49,24 @@ export class AddPage {
     this.viewCtrl.dismiss();
   }
 
-  getImage(): void {
+  getImage() {
     console.log("getImage()");
-    this.imageURI = this.dataService.getImage();
+    const options : CameraOptions = {
+      quality: 60,     
+      allowEdit: true,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+    }
+    this.camera.getPicture(options).then((imageData)=>{    
+      this.imageURI =  imageData;
+    },(err)=> {
+      console.log(err);    
+      this.dataService.presentToast(err);
+    })  
+    
   }
+
+  
 
   
 
