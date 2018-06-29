@@ -18,12 +18,6 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 export class AddPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public viewCtrl:ViewController,private dataService:ServiceProvider,private camera:Camera,public loadingCtrl: LoadingController,private transfer: FileTransfer) {        
-    this._id = navParams.get('_id');
-    this.name = navParams.get('name');
-    this.surname = navParams.get('surname');
-    this.age = navParams.get('age');    
-    this.imageName = navParams.get('imageName');
-    this.mediaPath = this.dataService.getMediaPath(); 
   }
   _id:string;
   name:string;
@@ -35,15 +29,22 @@ export class AddPage {
   mediaPath:any;
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddPage _id: '+this._id);
-    console.log(this.imageName);
+    this.mediaPath = this.dataService.getMediaPath(); 
+    this._id = this.navParams.get('_id');
+    this.name = this.navParams.get('name');
+    this.surname = this.navParams.get('surname');
+    this.age = this.navParams.get('age');    
+    this.imageName = this.navParams.get('imageName');
+    console.log('ionViewDidLoad AddPage _id: '+this._id);    
+    console.log("imageName: "+this.imageName);
+
     if(this.imageName!=undefined && this.imageName!=null){   
       this.imageURI = this.mediaPath+"/"+this.imageName;
-    }else{
+    }else if(this._id!=undefined && this._id!=null){
       this.imageURI = this.mediaPath+"/default.jpg";
     }
-    //console.log(this.navParams.get('name'));
   }
+
   save(): void {    
     this.saveData();
   }
@@ -57,12 +58,13 @@ export class AddPage {
     const options : CameraOptions = {
       quality: 50,     
       allowEdit: true,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
     }
     this.camera.getPicture(options).then((imageData)=>{    
-      this.imageURI = imageData;
-      this.imageUpload =  imageData;  
+      this.imageURI = "data:image/jpeg;base64," + imageData; //user DATA_URL
+      //this.imageURI = imageData; //user FILE_URL
+      this.imageUpload =  this.imageURI;  
       this.imageName = this.dataService.createFileName();
     },(err)=> {
       console.log(err);    
