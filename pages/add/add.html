@@ -36,10 +36,11 @@
   <ion-item>
       <img src="{{imageURI}}" *ngIf="imageURI" width="300" name="imageURI"><br>
     <button ion-button *ngIf="!imageURI" (click)="getImage()">Select Image</button>
+    <button ion-button *ngIf="!imageURI" (click)="captureImage()"><ion-icon name="camera"></ion-icon>Capture Image</button>
     <button ion-button *ngIf="imageURI" (click)="clearImage()">Change Image</button>
   </ion-item>
   <ion-item>    
-    <button ion-button (click)="save()">Submit</button>
+    <button ion-button block (click)="save()">Submit</button>
   </ion-item>
 
 </ion-content>
