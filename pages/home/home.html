@@ -17,7 +17,8 @@
  
      <ion-item>
         <ion-avatar item-left>
-          <a href="#" (click)="addPage(indx)"><img src="https://api.adorable.io/avatars/75/{{item.age}}"></a>
+          <a href="#" (click)="addPage(indx)"><img *ngIf="item.imageName" src="{{mediaPath}}/{{item.imageName}}"></a>
+          <a href="#" (click)="addPage(indx)"><img *ngIf="!item.imageName" src="{{mediaPath}}/default.jpg"></a>
         </ion-avatar>
         <h2>{{item.name}} {{item.surname}}</h2>        
         <p>{{item.age}}</p> 

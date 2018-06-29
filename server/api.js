@@ -7,6 +7,7 @@ const mongo_string = "mongodb://mongouser:Ca999999@ds121301.mlab.com:21301/ionic
 const myDb = "ionic_dev";
 const myCollection = "students";
 const ObjectId = require('mongodb').ObjectId;
+const mediaPath = "http://cloud.phuket-it.com/api/dev/upload/images";
 
 //const path = require('path');
 //app.use(express.static(path.join(__dirname,'dist')));
@@ -28,7 +29,7 @@ app.get('/show',function(req,res){
             .find()
             .toArray()
             .then(result=>{
-                const output = { result : 'ok',message: result}
+                const output = { result : 'ok', mediaPath:mediaPath, message: result }
                 res.json(output);
             });
         database.close();
@@ -39,7 +40,7 @@ app.post('/add',function(req,res){
     //res.end("add api:"+req.body.name);
     mongoClient.connect(mongo_string, function(err,database){
         const db = database.db(myDb);
-        const data = { name: req.body.name, surname: req.body.surname, age: req.body.age };        
+        const data = { name: req.body.name, surname: req.body.surname, age: req.body.age, imageName:req.body.imageName };        
         db.collection(myCollection)
             .insertOne(data,(err,result)=>{
                 if(err) throw err;
@@ -56,7 +57,7 @@ app.put('/update/:id',function(req,res){
         var db = database.db(myDb);
         
         var query = { _id : ObjectId(req.params.id) };
-        var newValue = {  $set:{ name : req.body.name, surname: req.body.surname, age: req.body.age} }; 
+        var newValue = {  $set:{ name : req.body.name, surname: req.body.surname, age: req.body.age,imageName:req.body.imageName} }; 
         db.collection(myCollection)
             .update(query, newValue, function(err,result){
                 if(err) throw err;
@@ -84,8 +85,15 @@ app.delete('/delete/:id',function (req,res){
     })
 })
 // listen (start app with node server.js) ======================================
-app.listen(8081);
-console.log("App listening on port 8081");
+
+var port = process.env.PORT;
+app.listen(port, () => {
+   console.log("application is listening on:", port);
+});
+
+//app.listen(8081);
+//console.log("App listening on port 8081");
+
 /*const server = app.listen(8081,function(){
     const port = server.address().port;
     console.log("Server is running.. at port: %s",port);

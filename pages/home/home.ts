@@ -10,8 +10,8 @@ import { AddPage } from '../add/add';
 export class HomePage {
 
   students:any;  
-  indx:string;
-  
+  indx:string;  
+  mediaPath:string;  
 
   constructor(public navCtrl: NavController,private dataService: ServiceProvider,public modalCtrl:ModalController) {
     //this.students = [];
@@ -56,7 +56,10 @@ export class HomePage {
     this.dataService.getData().subscribe(res => {      
         let Res:any = res;
         this.students = Res.message;
-        console.log(Res.message);
+        this.dataService.setMediaPath(Res.mediaPath);
+        this.mediaPath = this.dataService.getMediaPath(); 
+        //console.log("mediaPath: ",Res.mediaPath);
+        //console.log(Res.message);
     })
   }
 

@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http'; //HttpHeaders
 import { Injectable } from '@angular/core';
-import { ToastController } from 'ionic-angular';
+import { ToastController,LoadingController } from 'ionic-angular';
 import "rxjs/add/operator/map";
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 /*
   Generated class for the ServiceProvider provider.
 
@@ -11,12 +13,13 @@ import "rxjs/add/operator/map";
 @Injectable()
 export class ServiceProvider {
 
-  constructor(public http: HttpClient,public toastCtrl: ToastController) {
+  constructor(public http: HttpClient,public toastCtrl: ToastController,private camera:Camera,public loadingCtrl: LoadingController,private transfer: FileTransfer) {
     console.log('Hello ServiceProvider Provider');
   }
 
   //serverURL:string = "http://localhost:8081";
   serverURL:string = "https://gentle-escarpment-92556.herokuapp.com";
+  mediaPath:string;
 
   getData(){
     console.log("getData()");
@@ -51,5 +54,29 @@ export class ServiceProvider {
   
     toast.present();
   }
+
+getMediaPath(){
+  return this.mediaPath;
+}  
+setMediaPath(val){
+  this.mediaPath = val;
+}
+
+ createFileName(){
+    var d = new Date(),
+    n = d.getTime(),
+    newFileName=n+".jpg";
+    return newFileName;
+  }
+
+ pathUpload(){
+   return "http://cloud.phuket-it.com/api/dev";
+ }
+
+ getMatchJobs(){
+  return this.http.get('assets/data/jobs-match.json').map(res => res);
+ 
+  }
+
 
 }
