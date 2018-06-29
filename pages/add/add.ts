@@ -35,15 +35,14 @@ export class AddPage {
     this.surname = this.navParams.get('surname');
     this.age = this.navParams.get('age');    
     this.imageName = this.navParams.get('imageName');
-    console.log('ionViewDidLoad AddPage _id: '+this._id);    
-    console.log("imageName: "+this.imageName);
-
+    //console.log('ionViewDidLoad AddPage _id: '+this._id);    
+    //console.log("imageName: "+this.imageName);
     if(this.imageName!=undefined && this.imageName!=null){   
       this.imageURI = this.mediaPath+"/"+this.imageName;
     }else if(this._id!=undefined && this._id!=null){
       this.imageURI = this.mediaPath+"/default.jpg";
     }
-  }
+  }//DidLoad
 
   save(): void {    
     this.saveData();
@@ -51,6 +50,12 @@ export class AddPage {
 
   close(): void {
     this.viewCtrl.dismiss();
+  }
+
+  clearImage(){
+    this.imageURI = undefined;
+    this.imageName = undefined;
+    this.imageUpload = undefined;
   }
 
   getImage() {
@@ -71,6 +76,27 @@ export class AddPage {
       this.dataService.presentToast(err);
     })  
     
+  }
+
+  captureImage(){
+    const options: CameraOptions = {
+      quality: 50,
+      //saveToPhotoAlbum:true,
+      allowEdit: true,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType:this.camera.MediaType.PICTURE
+    }
+    this.camera.getPicture(options)
+        .then((imageData)=>{
+          this.imageURI = "data:image/jpeg;base64," + imageData; 
+          this.imageUpload =  this.imageURI;  
+          this.imageName = this.dataService.createFileName();
+        })
+        .catch((e) => {
+          console.log(e)
+          this.dataService.presentToast(e);
+        });  
   }
   
   saveData(){
@@ -117,11 +143,7 @@ export class AddPage {
     this.viewCtrl.dismiss(student); 
   }
 
-  clearImage(){
-    this.imageURI = undefined;
-    this.imageName = undefined;
-    this.imageUpload = undefined;
-  }
+  
 
   
 

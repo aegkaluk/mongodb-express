@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http'; //HttpHeaders
 import { Injectable } from '@angular/core';
 import { ToastController,LoadingController } from 'ionic-angular';
 import "rxjs/add/operator/map";
-import { Camera, CameraOptions } from '@ionic-native/camera';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+//import { Camera, CameraOptions } from '@ionic-native/camera';
+//import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 /*
   Generated class for the ServiceProvider provider.
 
@@ -13,7 +13,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 @Injectable()
 export class ServiceProvider {
 
-  constructor(public http: HttpClient,public toastCtrl: ToastController,private camera:Camera,public loadingCtrl: LoadingController,private transfer: FileTransfer) {
+  constructor(public http: HttpClient,public toastCtrl: ToastController,public loadingCtrl: LoadingController) {
     console.log('Hello ServiceProvider Provider');
   }
 
@@ -68,6 +68,7 @@ setMediaPath(val){
     newFileName=n+".jpg";
     return newFileName;
   }
+
 
 
 }
