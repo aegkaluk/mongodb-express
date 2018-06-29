@@ -69,14 +69,5 @@ setMediaPath(val){
     return newFileName;
   }
 
- pathUpload(){
-   return "http://cloud.phuket-it.com/api/dev";
- }
-
- getMatchJobs(){
-  return this.http.get('assets/data/jobs-match.json').map(res => res);
- 
-  }
-
 
 }

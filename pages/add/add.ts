@@ -22,14 +22,13 @@ export class AddPage {
     this.name = navParams.get('name');
     this.surname = navParams.get('surname');
     this.age = navParams.get('age');    
-      let mediaPath = this.dataService.getMediaPath(); 
+    this.mediaPath = this.dataService.getMediaPath(); 
       console.log(navParams.get('imageName'));
       if(navParams.get('imageName')!=undefined && navParams.get('imageName')!=null){
         this.imageName = navParams.get('imageName');         
-        this.imageURI = mediaPath+"/"+navParams.get('imageName');
+        this.imageURI = this.mediaPath+"/"+navParams.get('imageName');
       }else{
-        this.imageName = 'default.jpg';
-        this.imageURI = mediaPath+"/default.jpg";
+        this.imageURI = this.mediaPath+"/default.jpg";
       }
   }
   id:string;
@@ -39,14 +38,14 @@ export class AddPage {
   imageUpload:any;
   imageURI:any;
   imageName:any;
+  mediaPath:any;
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddPage _id: '+this.id);
     //console.log(this.navParams.get('name'));
   }
-  save(): void {
-    //this.imagePath = this.dataService.uploadFile(this.imageURI);
-    this.uploadFile();    
+  save(): void {    
+    this.uploadFile();
     let student = {
       _id:this.id,
       name:this.name,
@@ -54,7 +53,8 @@ export class AddPage {
       age: this.age,
       imageName :this.imageName
     };    
-    this.viewCtrl.dismiss(student);   
+    this.viewCtrl.dismiss(student); 
+    
   }
 
   close(): void {
@@ -66,28 +66,29 @@ export class AddPage {
     const options : CameraOptions = {
       quality: 75,     
       allowEdit: true,
-      saveToPhotoAlbum:true,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
     }
     this.camera.getPicture(options).then((imageData)=>{    
       this.imageUpload =  imageData;      
       this.imageURI = imageData;
+      this.imageName = this.dataService.createFileName();
     },(err)=> {
       console.log(err);    
       this.dataService.presentToast(err);
     })  
     
   }
-
+  
   uploadFile(){
     if(this.imageUpload!=undefined && this.imageUpload!=""){
         let loader = this.loadingCtrl.create({
           content:"Saving.."
         })
         loader.present();
-        const fileTransfer: FileTransferObject = this.transfer.create();
-        
+
+        const fileTransfer: FileTransferObject = this.transfer.create();       
+
         let options: FileUploadOptions = {
           fileKey: 'ionicfile', //php match $_FILES["ionicfile"]
           fileName: this.imageName,
@@ -95,27 +96,24 @@ export class AddPage {
           mimeType: 'image/jpeg',
           headers: {}
         }
-
-        let pathUpload = this.dataService.pathUpload+"/upload/";
-        
-        fileTransfer.upload(this.imageUpload,pathUpload,options)
+        //let pathUpload = this.dataService.pathUpload+"/upload/";        
+        fileTransfer.upload(this.imageUpload,this.mediaPath+'/',options)
             .then((data) => {
-                console.log(data+" Uploaded Successfully");
-                this.imageName = this.dataService.createFileName();
-                loader.dismiss();
+                console.log(data+" Uploaded Successfully");                
+                loader.dismiss();                
                 //return pathUpload+"/images/"+this.imageName;
             },(err) => {
                 console.log(err);
-                loader.dismiss();
+                loader.dismiss();               
                 //this.presentToast(err);
             });
-      }else{
-        console.log("no select image");
       }
   }
 
   clearImage(){
     this.imageURI = undefined;
+    this.imageName = undefined;
+    this.imageUpload = undefined;
   }
 
   
