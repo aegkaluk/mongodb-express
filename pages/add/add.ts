@@ -101,11 +101,13 @@ export class AddPage {
   }
 
   saveData(){
+
+    let loader = this.loadingCtrl.create({
+      content:"Saving.."
+    })
+    loader.present();
+
     if(this.imageUpload!=undefined && this.imageUpload!=""){
-        let loader = this.loadingCtrl.create({
-          content:"Saving.."
-        })
-        loader.present();
 
         const fileTransfer: FileTransferObject = this.transfer.create();
 
@@ -129,6 +131,7 @@ export class AddPage {
                 //this.presentToast(err);
             });
       }else{
+        loader.dismiss();
         this.callBackHome();
       }
   }

@@ -15,7 +15,7 @@
 </ion-header>
 
 
-<ion-content padding>  
+<ion-content padding>
   <ion-item>
     <p>{{imageUpload}}</p>
     <P>{{_id}}</P>
@@ -31,15 +31,14 @@
   <ion-item>
     <ion-label>Age</ion-label>
     <ion-input type="text" [(ngModel)]="age" name="age"></ion-input>
-    <ion-input type="hidden" [(ngModel)]="id" name="id"></ion-input>
   </ion-item>
   <ion-item>
-      <img src="{{imageURI}}" *ngIf="imageURI" width="300" name="imageURI"><br>
+    <img src="{{imageURI}}" *ngIf="imageURI" width="300" name="imageURI"><br>
     <button ion-button *ngIf="!imageURI" (click)="getImage()">Select Image</button>
     <button ion-button *ngIf="!imageURI" (click)="captureImage()"><ion-icon name="camera"></ion-icon>Capture Image</button>
     <button ion-button *ngIf="imageURI" (click)="clearImage()">Change Image</button>
   </ion-item>
-  <ion-item>    
+  <ion-item>
     <button ion-button block (click)="save()">Submit</button>
   </ion-item>
 
