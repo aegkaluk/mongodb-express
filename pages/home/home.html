@@ -10,21 +10,24 @@
 </ion-header>
 
 <ion-content padding>
-  <p>Ionic+Node.js(Heroku)+Mongodb(mLab)</p>
-  <p>{{mediaPath}}</p>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <!--<p>Ionic+Node.js(Heroku)+Mongodb(mLab)</p>
+  <p>{{mediaPath}}</p>-->
+
   <ion-list no-lines>
- 
     <ion-item-sliding *ngFor="let item of students;let indx = index" [attr.data-index]="i">
- 
      <ion-item>
         <ion-avatar item-left>
           <a href="#" (click)="addPage(indx)"><img *ngIf="item.imageName" src="{{mediaPath}}/thumb/{{item.imageName}}"></a>
           <a href="#" (click)="addPage(indx)"><img *ngIf="!item.imageName" src="{{mediaPath}}/thumb/default.jpg"></a>
         </ion-avatar>
-        <h2>{{item.name}} {{item.surname}}</h2>        
-        <p>{{item.age}}</p> 
+        <h2>{{item.name}} {{item.surname}}</h2>
+        <p>{{item.age}}</p>
     </ion-item>
- 
+
       <ion-item-options>
         <button ion-button color="danger" (click)="deleteData(item)">
           <ion-icon name="trash"></ion-icon>
@@ -32,6 +35,6 @@
         </button>
       </ion-item-options>
     </ion-item-sliding>
- 
+
   </ion-list>
 </ion-content>

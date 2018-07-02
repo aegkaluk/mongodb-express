@@ -71,6 +71,14 @@ export class HomePage {
     })
 
   }
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      this.onLoad();
+      refresher.complete();
+    }, 500);
+  }
 
   deleteData(student):void{
 
